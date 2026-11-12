@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>بناء سيناريوهات دعم القرار - المدرسة العليا للعلوم السياسية</title>
+<title>بناء سيناريوهات دعم القرار</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;direction:rtl;background:#f4f7f9;color:#1e293b;padding:2rem 1rem}
@@ -15,8 +15,8 @@ p.subtitle{color:#64748b;font-size:16px}
 .section-title{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:1rem;border-bottom:1px solid #E2E8F0;padding-bottom:0.5rem}
 .form-group{margin-bottom:1.2rem}
 label{display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px}
-textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
-textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
+input[type=text], select, textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+textarea:focus, select:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
 .btn{width:100%;padding:14px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:background 0.2s;margin-top:1rem}
 .btn:hover{background:#085041}
 .output-box{margin-top:2rem;display:none;background:#fff;border-radius:12px;padding:2rem;border:1px solid #e2e8f0}
@@ -31,25 +31,33 @@ pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-spac
 <div class="container">
   <header>
     <h1>بناء سيناريوهات دعم القرار</h1>
-    <p class="subtitle">توليد 3 سيناريوهات (متفائل، واقعي، متشائم) لسياسة عامة مع مؤشرات القياس</p>
+    <p class="subtitle">توليد 3 سيناريوهات لسياسة عامة مع مؤشرات القياس</p>
   </header>
 
   <div class="card">
     <div class="section-title">مدخلات الأداة</div>
     
     <div class="form-group">
+      <label>لغة المخرج</label>
+      <select id="lang">
+        <option value="Arabic (فصحى أكاديمية رصينة)">العربية</option>
+        <option value="English (formal academic, native-speaker register)">English</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label>السياسة العامة المستهدفة</label>
-      <textarea id="policy" placeholder="مثال: سياسة مكافحة الفساد في الإدارة العامة التونسية..."></textarea>
+      <textarea id="policy" placeholder="مثال: سياسة مكافحة الفساد..."></textarea>
     </div>
 
     <div class="form-group">
       <label>المعطيات الحالية (الوضع الراهن)</label>
-      <textarea id="data" rows="4" placeholder="مثال: نسبة الفساد 60%، غياب الرقابة المجتمعية، ضعف المؤسسات..."></textarea>
+      <textarea id="data" rows="4" placeholder="مثال: نسبة الفساد 60%..."></textarea>
     </div>
 
     <div class="form-group">
       <label>الأهداف المرجوة (اختياري)</label>
-      <textarea id="goals" placeholder="مثال: تقليل الفساد بنسبة 20% خلال 5 سنوات..."></textarea>
+      <textarea id="goals" placeholder="مثال: تقليل الفساد بنسبة 20%..."></textarea>
     </div>
   </div>
 
@@ -66,6 +74,7 @@ pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-spac
 
 <script>
 document.getElementById('generateBtn').addEventListener('click', function() {
+    const lang = document.getElementById('lang').value;
     const policy = document.getElementById('policy').value || '[السياسة]';
     const data = document.getElementById('data').value || '[المعطيات]';
     const goals = document.getElementById('goals').value || 'غير محددة';
@@ -118,7 +127,7 @@ For each scenario (Optimistic, Realistic, Pessimistic), provide:
 
 Start directly with "السيناريو الأول: المتفائل" without any preamble.
 
-Target Language: Arabic (فصحى أكاديمية رصينة)`;
+Target Language: ${lang}`;
 
     document.getElementById('resultText').textContent = prompt;
     document.getElementById('outputBox').style.display = 'block';
@@ -128,7 +137,6 @@ Target Language: Arabic (فصحى أكاديمية رصينة)`;
 document.getElementById('copyBtn').addEventListener('click', function() {
     const text = document.getElementById('resultText').textContent;
     if (!text) return;
-    
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copyBtn');
         btn.textContent = 'تم النسخ ✓';
