@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المراجعة الأدبية الآلية - المدرسة العليا للعلوم السياسية</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;direction:rtl;background:#f4f7f9;color:#1e293b;padding:2rem 1rem}
+.container{max-width:800px;margin:0 auto}
+header{text-align:center;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid #E2E8F0}
+h1{font-size:28px;color:#0F6E56;margin-bottom:0.5rem}
+p.subtitle{color:#64748b;font-size:16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:2rem;margin-bottom:1.5rem;border:1px solid #e2e8f0}
+.section-title{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:1rem;border-bottom:1px solid #E2E8F0;padding-bottom:0.5rem}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px}
+textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
+.btn{width:100%;padding:14px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:background 0.2s;margin-top:1rem}
+.btn:hover{background:#085041}
+.output-box{margin-top:2rem;display:none;background:#fff;border-radius:12px;padding:2rem;border:1px solid #e2e8f0}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.output-title{font-weight:bold;color:#0F6E56}
+.copy-btn{background:#E1F5EE;color:#085041;border:1px solid #0F6E56;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold}
+pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;direction:ltr;text-align:left;max-height:500px;overflow-y:auto}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>المراجعة الأدبية الآلية</h1>
+    <p class="subtitle">تلخيص وتصنيف الأدبيات حسب المحاور النظرية وتحديد الفجوات البحثية</p>
+  </header>
+
+  <div class="card">
+    <div class="section-title">مدخلات الأداة</div>
+    
+    <div class="form-group">
+      <label>موضوع البحث</label>
+      <textarea id="topic" placeholder="مثال: دور المجتمع المدني في تعزيز الشفافية..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>قائمة المقالات أو الملخصات (كل مقال في سطر منفصل)</label>
+      <textarea id="articles" rows="8" placeholder="مثال: 
+- Smith (2020): The role of NGOs in transparency...
+- Ali (2021): Civil society and anti-corruption in MENA...
+- Johnson (2019): Social accountability mechanisms..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>المحاور النظرية المطلوب التصنيف حسبها (اختياري)</label>
+      <textarea id="themes" placeholder="مثال: الحوكمة الرشيدة، الرقابة المجتمعية، الفساد الإداري..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn" id="generateBtn">توليد برومبت المراجعة</button>
+
+  <div class="output-box" id="outputBox">
+    <div class="output-header">
+      <span class="output-title">البرومبت جاهز للنسخ</span>
+      <button class="copy-btn" id="copyBtn">نسخ النص</button>
+    </div>
+    <pre id="resultText"></pre>
+  </div>
+</div>
+
+<script>
+document.getElementById('generateBtn').addEventListener('click', function() {
+    const topic = document.getElementById('topic').value || '[الموضوع]';
+    const articles = document.getElementById('articles').value || '[المقالات]';
+    const themes = document.getElementById('themes').value || 'غير محدد (اقترح المحاور)';
+
+    const prompt = `=====================================================================
+IDENTITY & EXPERTISE
+=====================================================================
+You are a Senior Academic Supervisor in Political Science with 20+ years of experience in conducting and supervising systematic literature reviews.
+
+=====================================================================
+TASK SPECIFICATION
+=====================================================================
+Analyze the provided list of articles/abstracts and produce a comprehensive thematic literature review.
+
+RESEARCH TOPIC:
+"""
+${topic}
+"""
+
+LIST OF ARTICLES/ABSTRACTS:
+"""
+${articles}
+"""
+
+THEMATIC AXES (إذا تم تحديدها):
+${themes}
+
+=====================================================================
+HUMAN AUTHENTICITY & STYLE CONSTRAINTS
+=====================================================================
+1. RHYTHM & CADENCE: 
+   - Avoid uniform sentence length.
+   - Use "Syncopated Cadence": Alternate between short declarative sentences (6–10 words) and complex subordinate clauses (30–45 words).
+
+2. BANNED PHRASES:
+   - Never use: "It is worth noting," "Delve into," "Shed light on," "Tapestry," "Paradigm shift," "Holistic approach."
+   - Never start a sentence with "In recent years" or "With the advent of."
+
+3. STRUCTURAL PROHIBITIONS:
+   - Do NOT use bullet points or numbered lists. Write in flowing academic prose.
+
+=====================================================================
+OUTPUT FORMAT
+=====================================================================
+1. **التصنيف الموضوعي:** قم بتصنيف المقالات إلى محاور نظرية (3-4 محاور)، مع ذكر كل مقال في محوره.
+2. **نقاط التقاطع:** ما هي القواسم المشتركة بين هذه الدراسات؟
+3. **نقاط الاختلاف:** ما هي التناقضات أو الاختلافات في النتائج أو المناهج؟
+4. **الفجوات البحثية:** ما الذي لم تتناوله هذه الدراسات؟ (حدد فجوة واحدة أو اثنتين بدقة).
+
+Start directly with "التصنيف الموضوعي:" without any preamble.
+
+Target Language: Arabic (فصحى أكاديمية رصينة)`;
+
+    document.getElementById('resultText').textContent = prompt;
+    document.getElementById('outputBox').style.display = 'block';
+    document.getElementById('outputBox').scrollIntoView({behavior: 'smooth'});
+});
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const text = document.getElementById('resultText').textContent;
+    if (!text) return;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'تم النسخ ✓';
+        setTimeout(() => btn.textContent = 'نسخ النص', 2000);
+    });
+});
+</script>
+
+</body>
+</html>

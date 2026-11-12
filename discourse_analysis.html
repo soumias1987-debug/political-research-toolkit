@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحليل الخطاب السياسي - المدرسة العليا للعلوم السياسية</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;direction:rtl;background:#f4f7f9;color:#1e293b;padding:2rem 1rem}
+.container{max-width:800px;margin:0 auto}
+header{text-align:center;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid #E2E8F0}
+h1{font-size:28px;color:#0F6E56;margin-bottom:0.5rem}
+p.subtitle{color:#64748b;font-size:16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:2rem;margin-bottom:1.5rem;border:1px solid #e2e8f0}
+.section-title{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:1rem;border-bottom:1px solid #E2E8F0;padding-bottom:0.5rem}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px}
+textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
+.btn{width:100%;padding:14px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:background 0.2s;margin-top:1rem}
+.btn:hover{background:#085041}
+.output-box{margin-top:2rem;display:none;background:#fff;border-radius:12px;padding:2rem;border:1px solid #e2e8f0}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.output-title{font-weight:bold;color:#0F6E56}
+.copy-btn{background:#E1F5EE;color:#085041;border:1px solid #0F6E56;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold}
+pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;direction:ltr;text-align:left;max-height:500px;overflow-y:auto}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>تحليل الخطاب السياسي</h1>
+    <p class="subtitle">تحليل الاستراتيجية الخطابية، الجمهور المستهدف، والأيديولوجيا الضمنية</p>
+  </header>
+
+  <div class="card">
+    <div class="section-title">مدخلات الأداة</div>
+    
+    <div class="form-group">
+      <label>نص الخطاب السياسي</label>
+      <textarea id="speech" rows="6" placeholder="الصق هنا نص الخطاب (خطاب رئيس، بيان حزب، تصريح وزاري)..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>السياق (اختياري)</label>
+      <textarea id="context" placeholder="مثال: خطاب انتخابي في تونس 2023، ألقاه رئيس حزب..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn" id="generateBtn">توليد برومبت التحليل</button>
+
+  <div class="output-box" id="outputBox">
+    <div class="output-header">
+      <span class="output-title">البرومبت جاهز للنسخ</span>
+      <button class="copy-btn" id="copyBtn">نسخ النص</button>
+    </div>
+    <pre id="resultText"></pre>
+  </div>
+</div>
+
+<script>
+document.getElementById('generateBtn').addEventListener('click', function() {
+    const speech = document.getElementById('speech').value || '[الخطاب]';
+    const context = document.getElementById('context').value || 'غير محدد';
+
+    const prompt = `=====================================================================
+IDENTITY & EXPERTISE
+=====================================================================
+You are a Senior Academic Scholar in Political Science with 20+ years of experience in Critical Discourse Analysis (CDA), specifically the Fairclough three-dimensional model. You are an expert in analyzing political speeches, party manifestos, and ministerial statements.
+
+=====================================================================
+TASK SPECIFICATION
+=====================================================================
+Analyze the provided political discourse, focusing on rhetorical strategies, target audience, implicit ideology, and argumentation.
+
+POLITICAL SPEECH/DISCOURSE:
+"""
+${speech}
+"""
+
+CONTEXT:
+${context}
+
+=====================================================================
+HUMAN AUTHENTICITY & STYLE CONSTRAINTS
+=====================================================================
+1. RHYTHM & CADENCE: 
+   - Avoid uniform sentence length.
+   - Use "Syncopated Cadence": Alternate between short declarative sentences (6–10 words) and complex subordinate clauses (30–45 words).
+
+2. BANNED PHRASES:
+   - Never use: "It is worth noting," "Delve into," "Shed light on," "Tapestry," "Paradigm shift," "Holistic approach."
+
+3. STRUCTURAL PROHIBITIONS:
+   - Do NOT use bullet points or numbered lists. Write in flowing academic prose.
+
+=====================================================================
+OUTPUT FORMAT
+=====================================================================
+Provide a structured analysis covering:
+1. **الاستراتيجية الخطابية:** كيف تم بناء الخطاب؟ (الإقناع، التكرار، الاستعارة، إلخ).
+2. **الجمهور المستهدف:** لمن يتوجه الخطاب؟ وكيف تم استمالته؟
+3. **الأيديولوجيا الضمنية:** ما هي القيم والافتراضات غير المعلنة في الخطاب؟
+4. **الحجج المستخدمة:** ما هي الحجج الرئيسية؟ وهل هي منطقية أم عاطفية؟
+5. **الخلاصة التحليلية:** ماذا يكشف هذا الخطاب عن السياق السياسي والاجتماعي؟
+
+Start directly with "الاستراتيجية الخطابية:" without any preamble.
+
+Target Language: Arabic (فصحى أكاديمية رصينة)`;
+
+    document.getElementById('resultText').textContent = prompt;
+    document.getElementById('outputBox').style.display = 'block';
+    document.getElementById('outputBox').scrollIntoView({behavior: 'smooth'});
+});
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const text = document.getElementById('resultText').textContent;
+    if (!text) return;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'تم النسخ ✓';
+        setTimeout(() => btn.textContent = 'نسخ النص', 2000);
+    });
+});
+</script>
+
+</body>
+</html>

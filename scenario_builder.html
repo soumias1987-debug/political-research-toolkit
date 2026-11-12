@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بناء سيناريوهات دعم القرار - المدرسة العليا للعلوم السياسية</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;direction:rtl;background:#f4f7f9;color:#1e293b;padding:2rem 1rem}
+.container{max-width:800px;margin:0 auto}
+header{text-align:center;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid #E2E8F0}
+h1{font-size:28px;color:#0F6E56;margin-bottom:0.5rem}
+p.subtitle{color:#64748b;font-size:16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:2rem;margin-bottom:1.5rem;border:1px solid #e2e8f0}
+.section-title{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:1rem;border-bottom:1px solid #E2E8F0;padding-bottom:0.5rem}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px}
+textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
+.btn{width:100%;padding:14px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:background 0.2s;margin-top:1rem}
+.btn:hover{background:#085041}
+.output-box{margin-top:2rem;display:none;background:#fff;border-radius:12px;padding:2rem;border:1px solid #e2e8f0}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.output-title{font-weight:bold;color:#0F6E56}
+.copy-btn{background:#E1F5EE;color:#085041;border:1px solid #0F6E56;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold}
+pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;direction:ltr;text-align:left;max-height:500px;overflow-y:auto}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>بناء سيناريوهات دعم القرار</h1>
+    <p class="subtitle">توليد 3 سيناريوهات (متفائل، واقعي، متشائم) لسياسة عامة مع مؤشرات القياس</p>
+  </header>
+
+  <div class="card">
+    <div class="section-title">مدخلات الأداة</div>
+    
+    <div class="form-group">
+      <label>السياسة العامة المستهدفة</label>
+      <textarea id="policy" placeholder="مثال: سياسة مكافحة الفساد في الإدارة العامة التونسية..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>المعطيات الحالية (الوضع الراهن)</label>
+      <textarea id="data" rows="4" placeholder="مثال: نسبة الفساد 60%، غياب الرقابة المجتمعية، ضعف المؤسسات..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>الأهداف المرجوة (اختياري)</label>
+      <textarea id="goals" placeholder="مثال: تقليل الفساد بنسبة 20% خلال 5 سنوات..."></textarea>
+    </div>
+  </div>
+
+  <button class="btn" id="generateBtn">توليد برومبت السيناريوهات</button>
+
+  <div class="output-box" id="outputBox">
+    <div class="output-header">
+      <span class="output-title">البرومبت جاهز للنسخ</span>
+      <button class="copy-btn" id="copyBtn">نسخ النص</button>
+    </div>
+    <pre id="resultText"></pre>
+  </div>
+</div>
+
+<script>
+document.getElementById('generateBtn').addEventListener('click', function() {
+    const policy = document.getElementById('policy').value || '[السياسة]';
+    const data = document.getElementById('data').value || '[المعطيات]';
+    const goals = document.getElementById('goals').value || 'غير محددة';
+
+    const prompt = `=====================================================================
+IDENTITY & EXPERTISE
+=====================================================================
+You are a Senior Policy Analyst and Academic Scholar with 20+ years of experience in scenario planning, public policy analysis, and decision support systems for governments and international organizations.
+
+=====================================================================
+TASK SPECIFICATION
+=====================================================================
+Based on the current data and the target policy, build THREE (3) distinct scenarios: Optimistic, Realistic, and Pessimistic.
+
+TARGET POLICY:
+"""
+${policy}
+"""
+
+CURRENT DATA / STATUS QUO:
+"""
+${data}
+"""
+
+DESIRED GOALS:
+${goals}
+
+=====================================================================
+HUMAN AUTHENTICITY & STYLE CONSTRAINTS
+=====================================================================
+1. RHYTHM & CADENCE: 
+   - Avoid uniform sentence length.
+   - Use "Syncopated Cadence": Alternate between short declarative sentences (6–10 words) and complex subordinate clauses (30–45 words).
+
+2. BANNED PHRASES:
+   - Never use: "It is worth noting," "Delve into," "Shed light on," "Tapestry," "Paradigm shift," "Holistic approach."
+
+3. STRUCTURAL PROHIBITIONS:
+   - Do NOT use bullet points or numbered lists. Write in flowing academic prose.
+
+=====================================================================
+OUTPUT FORMAT
+=====================================================================
+For each scenario (Optimistic, Realistic, Pessimistic), provide:
+1. **العنوان:** (السيناريو المتفائل / الواقعي / المتشائم).
+2. **الوصف:** كيف ستبدو السياسة العامة في هذا السيناريو؟
+3. **الافتراضات:** ما هي الشروط التي يجب أن تتحقق؟
+4. **مؤشرات القياس:** كيف نقيس نجاح أو فشل هذا السيناريو؟ (3-4 مؤشرات).
+5. **احتمالية التحقق:** نسبة مئوية تقديرية.
+
+Start directly with "السيناريو الأول: المتفائل" without any preamble.
+
+Target Language: Arabic (فصحى أكاديمية رصينة)`;
+
+    document.getElementById('resultText').textContent = prompt;
+    document.getElementById('outputBox').style.display = 'block';
+    document.getElementById('outputBox').scrollIntoView({behavior: 'smooth'});
+});
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const text = document.getElementById('resultText').textContent;
+    if (!text) return;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'تم النسخ ✓';
+        setTimeout(() => btn.textContent = 'نسخ النص', 2000);
+    });
+});
+</script>
+
+</body>
+</html>

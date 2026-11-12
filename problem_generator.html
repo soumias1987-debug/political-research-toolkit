@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مولّد الإشكاليات البحثية - المدرسة العليا للعلوم السياسية</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;direction:rtl;background:#f4f7f9;color:#1e293b;padding:2rem 1rem}
+.container{max-width:800px;margin:0 auto}
+header{text-align:center;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid #E2E8F0}
+h1{font-size:28px;color:#0F6E56;margin-bottom:0.5rem}
+p.subtitle{color:#64748b;font-size:16px}
+.card{background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.04);padding:2rem;margin-bottom:1.5rem;border:1px solid #e2e8f0}
+.section-title{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:1rem;border-bottom:1px solid #E2E8F0;padding-bottom:0.5rem}
+.form-group{margin-bottom:1.2rem}
+label{display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px}
+textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
+.btn{width:100%;padding:14px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:background 0.2s;margin-top:1rem}
+.btn:hover{background:#085041}
+.output-box{margin-top:2rem;display:none;background:#fff;border-radius:12px;padding:2rem;border:1px solid #e2e8f0}
+.output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.output-title{font-weight:bold;color:#0F6E56}
+.copy-btn{background:#E1F5EE;color:#085041;border:1px solid #0F6E56;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:bold}
+pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.6;direction:ltr;text-align:left;max-height:500px;overflow-y:auto}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>مولّد الإشكاليات البحثية</h1>
+    <p class="subtitle">أداة لاستخراج إشكالية بحثية قابلة للدراسة من الأدبيات السياسية</p>
+  </header>
+
+  <div class="card">
+    <div class="section-title">مدخلات الأداة</div>
+    
+    <div class="form-group">
+      <label>الموضوع العام أو المجال</label>
+      <textarea id="topic" placeholder="مثال: تأثير وسائل التواصل الاجتماعي على المشاركة السياسية في دول المغرب العربي..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>ملخصات أو عناوين الأدبيات (كل ملخص في سطر منفصل)</label>
+      <textarea id="abstracts" rows="6" placeholder="الصق هنا ملخصات 5-10 مقالات أو عناوينها..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>الميدان الفرعي (اختياري)</label>
+      <textarea id="subfield" placeholder="مثال: السياسة المقارنة / الإدارة العامة / العلاقات الدولية"></textarea>
+    </div>
+  </div>
+
+  <button class="btn" id="generateBtn">توليد الإشكاليات البحثية</button>
+
+  <div class="output-box" id="outputBox">
+    <div class="output-header">
+      <span class="output-title">البرومبت جاهز للنسخ</span>
+      <button class="copy-btn" id="copyBtn">نسخ النص</button>
+    </div>
+    <pre id="resultText"></pre>
+  </div>
+</div>
+
+<script>
+document.getElementById('generateBtn').addEventListener('click', function() {
+    const topic = document.getElementById('topic').value || '[الموضوع العام]';
+    const abstracts = document.getElementById('abstracts').value || '[أدخل الملخصات]';
+    const subfield = document.getElementById('subfield').value || 'العلوم السياسية';
+
+    const prompt = `=====================================================================
+IDENTITY & EXPERTISE
+=====================================================================
+You are a Senior Academic Supervisor in Political Science and a published scholar with 20+ years of experience in guiding students to formulate rigorous research problems. You are an expert in ${subfield}.
+
+=====================================================================
+TASK SPECIFICATION
+=====================================================================
+Based on the general topic and the provided literature abstracts, your task is to extract THREE (3) distinct research problems (إشكاليات بحثية) that are theoretically grounded, empirically researchable, and suitable for a Master's or PhD thesis in ${subfield}.
+
+GENERAL TOPIC:
+"""
+${topic}
+"""
+
+LITERATURE ABSTRACTS/TITLES:
+"""
+${abstracts}
+"""
+
+=====================================================================
+HUMAN AUTHENTICITY & STYLE CONSTRAINTS
+=====================================================================
+1. RHYTHM & CADENCE: 
+   - Avoid uniform sentence length.
+   - Use "Syncopated Cadence": Alternate between short, punchy sentences (6–10 words) and long, complex subordinate clauses (30–45 words).
+   - Avoid starting consecutive sentences with the same grammatical structure.
+
+2. BANNED PHRASES:
+   - Never use: "It is worth noting," "Delve into," "Shed light on," "Tapestry," "Paradigm shift," "Holistic approach."
+   - Never start a sentence with "In recent years" or "With the advent of."
+
+3. STRUCTURAL PROHIBITIONS:
+   - Do NOT use bullet points or numbered lists. Write in flowing academic prose.
+
+=====================================================================
+OUTPUT FORMAT
+=====================================================================
+For each of the 3 research problems, provide a single cohesive paragraph that contains:
+1. The Research Problem (clearly and precisely stated).
+2. The Justification (why it is theoretically significant and timely).
+3. The Research Question(s) derived from the problem.
+
+Start directly with "الإشكالية الأولى:" without any preamble.
+
+Target Language: Arabic (فصحى أكاديمية رصينة)`;
+
+    document.getElementById('resultText').textContent = prompt;
+    document.getElementById('outputBox').style.display = 'block';
+    document.getElementById('outputBox').scrollIntoView({behavior: 'smooth'});
+});
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const text = document.getElementById('resultText').textContent;
+    if (!text) return;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = 'تم النسخ ✓';
+        setTimeout(() => btn.textContent = 'نسخ النص', 2000);
+    });
+});
+</script>
+
+</body>
+</html>
