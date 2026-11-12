@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مولّد الإشكاليات البحثية - المدرسة العليا للعلوم السياسية</title>
+<title>مولّد الإشكاليات البحثية</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;direction:rtl;background:#f4f7f9;color:#1e293b;padding:2rem 1rem}
@@ -15,8 +15,8 @@ p.subtitle{color:#64748b;font-size:16px}
 .section-title{font-size:18px;font-weight:700;color:#0F6E56;margin-bottom:1rem;border-bottom:1px solid #E2E8F0;padding-bottom:0.5rem}
 .form-group{margin-bottom:1.2rem}
 label{display:block;font-size:14px;font-weight:600;color:#334155;margin-bottom:6px}
-textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
-textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
+input[type=text], select, textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;font-family:inherit;outline:none;resize:vertical;min-height:80px;line-height:1.6}
+textarea:focus, select:focus{border-color:#0F6E56;box-shadow:0 0 0 3px rgba(15,110,86,0.1)}
 .btn{width:100%;padding:14px;background:#0F6E56;color:white;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:background 0.2s;margin-top:1rem}
 .btn:hover{background:#085041}
 .output-box{margin-top:2rem;display:none;background:#fff;border-radius:12px;padding:2rem;border:1px solid #e2e8f0}
@@ -38,18 +38,26 @@ pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-spac
     <div class="section-title">مدخلات الأداة</div>
     
     <div class="form-group">
+      <label>لغة المخرج</label>
+      <select id="lang">
+        <option value="Arabic (فصحى أكاديمية رصينة)">العربية</option>
+        <option value="English (formal academic, native-speaker register)">English</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label>الموضوع العام أو المجال</label>
-      <textarea id="topic" placeholder="مثال: تأثير وسائل التواصل الاجتماعي على المشاركة السياسية في دول المغرب العربي..."></textarea>
+      <textarea id="topic" placeholder="مثال: تأثير وسائل التواصل الاجتماعي على المشاركة السياسية..."></textarea>
     </div>
 
     <div class="form-group">
       <label>ملخصات أو عناوين الأدبيات (كل ملخص في سطر منفصل)</label>
-      <textarea id="abstracts" rows="6" placeholder="الصق هنا ملخصات 5-10 مقالات أو عناوينها..."></textarea>
+      <textarea id="abstracts" rows="6" placeholder="الصق هنا ملخصات 5-10 مقالات..."></textarea>
     </div>
 
     <div class="form-group">
       <label>الميدان الفرعي (اختياري)</label>
-      <textarea id="subfield" placeholder="مثال: السياسة المقارنة / الإدارة العامة / العلاقات الدولية"></textarea>
+      <input type="text" id="subfield" placeholder="مثال: السياسة المقارنة" />
     </div>
   </div>
 
@@ -66,6 +74,7 @@ pre{background:#1e293b;color:#e2e8f0;padding:1.5rem;border-radius:8px;white-spac
 
 <script>
 document.getElementById('generateBtn').addEventListener('click', function() {
+    const lang = document.getElementById('lang').value;
     const topic = document.getElementById('topic').value || '[الموضوع العام]';
     const abstracts = document.getElementById('abstracts').value || '[أدخل الملخصات]';
     const subfield = document.getElementById('subfield').value || 'العلوم السياسية';
@@ -115,7 +124,7 @@ For each of the 3 research problems, provide a single cohesive paragraph that co
 
 Start directly with "الإشكالية الأولى:" without any preamble.
 
-Target Language: Arabic (فصحى أكاديمية رصينة)`;
+Target Language: ${lang}`;
 
     document.getElementById('resultText').textContent = prompt;
     document.getElementById('outputBox').style.display = 'block';
@@ -125,7 +134,6 @@ Target Language: Arabic (فصحى أكاديمية رصينة)`;
 document.getElementById('copyBtn').addEventListener('click', function() {
     const text = document.getElementById('resultText').textContent;
     if (!text) return;
-    
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copyBtn');
         btn.textContent = 'تم النسخ ✓';
